@@ -3,19 +3,14 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="fill_parent"
-              android:layout_height="fill_parent">
+              android:layout_height="wrap_content">
     <LinearLayout
 
             android:id="@+id/left"
             android:layout_weight="0.33"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             >
-        <ImageView
-                android:id="@+id/left_iv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
 
     </LinearLayout>
 
@@ -23,7 +18,7 @@
     <LinearLayout
             android:id="@+id/center"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="0.33"
             android:orientation="vertical"
             >
@@ -32,6 +27,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 />
+        <TextView
+            android:id="@+id/text_under_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#cdcdcd"
+            />
 
 
     </LinearLayout>
@@ -39,14 +40,8 @@
 
             android:id="@+id/right"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="0.33"
             >
-        <ImageView
-                android:id="@+id/right_iv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                />
-
     </LinearLayout>
 </LinearLayout>

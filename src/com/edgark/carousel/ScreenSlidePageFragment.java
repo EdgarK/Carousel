@@ -11,6 +11,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.lang.reflect.Array;
 
@@ -28,22 +29,37 @@ public class ScreenSlidePageFragment extends Fragment implements View.OnClickLis
     private int position;
     private AlphaAnimation[] animations = new AlphaAnimation[2];
 
-    private int leftImg;
-    private int rightImg;
+    private boolean first = false;
+    private boolean last = false;
+    private int text;
+    private TextView tv;
 
-    private ImageView leftIv;
-    private ImageView rightIv;
+    private ScreenSlidePagerActivity activity;
 
 
-    public ScreenSlidePageFragment(int img, int position){
-      this.position = position;
-      img_id = img;
-      makeAnimations();
+    private void initializer(Integer[] res, int position){
+        this.position = position;
+        makeAnimations();
+        img_id = res[0];
+        this.text = res[1];
     }
-    private void makeAnimations(){
-        final Float[][] choises = {{0.5f,1.0f,100f,255f},{1.0f,0.5f,255f,100f}};
+    public ScreenSlidePageFragment(Integer[] img, int position) {
+        initializer(img, position);
+    }
 
-        for(int i=0;i<2;i++){
+    public ScreenSlidePageFragment(int position, String firstOrLast, Integer[] res) {
+        initializer(res, position);
+        if (firstOrLast.equals("first")) {
+            first = true;
+        } else {
+            last = true;
+        }
+    }
+
+    private void makeAnimations() {
+        final Float[][] choises = {{0.5f, 1.0f, 100f, 255f}, {1.0f, 0.5f, 255f, 100f}};
+
+        for (int i = 0; i < 2; i++) {
             AlphaAnimation animation = new AlphaAnimation(choises[i][0], choises[i][1]);
             animation.setDuration(300);
             final int index = i;
@@ -74,33 +90,15 @@ public class ScreenSlidePageFragment extends Fragment implements View.OnClickLis
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_screen_slide_page, container, false);
         iv = ((ImageView) rootView.findViewById(R.id.iv));
-        leftIv = ((ImageView) rootView.findViewById(R.id.left_iv));
-        rightIv = ((ImageView) rootView.findViewById(R.id.right_iv));
+        tv = ((TextView) rootView.findViewById(R.id.text_under_image));
         iv.setImageResource(img_id);
+        tv.setText(text);
         iv.setOnClickListener(this);
-        if(!selected)
+        if (!selected)
             iv.setAlpha(100);
+//            tv.setAlpha(100);
+        activity = (ScreenSlidePagerActivity) getActivity();
 
-        if ((Integer) leftImg != null) {
-            leftIv.setImageResource(leftImg);
-            leftIv.setAlpha(100);
-            leftIv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ((ScreenSlidePagerActivity) getActivity()).selectLast();
-                }
-            });
-        }
-        if ((Integer) rightImg != null) {
-            rightIv.setImageResource(rightImg);
-            rightIv.setAlpha(100);
-            rightIv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ((ScreenSlidePagerActivity) getActivity()).selectFirst();
-                }
-            });
-        }
         return rootView;
     }
 
@@ -109,30 +107,31 @@ public class ScreenSlidePageFragment extends Fragment implements View.OnClickLis
     }
 
     public void setSelected(boolean selected) {
-        if(selected){
-            if (iv != null) {
-                iv.startAnimation(animations[0]);
+        if (!first && !last) {
+            if (selected) {
+                if (iv != null) {
+                    iv.startAnimation(animations[0]);
+                }
+            } else {
+                if (iv != null) {
+                    iv.startAnimation(animations[1]);
+                }
             }
+            this.selected = selected;
         }else{
-            if (iv != null) {
-                iv.startAnimation(animations[1]);
-            }
+            if(selected) onClick();
         }
-        this.selected = selected;
-    }
-
-    public void setLeftImg(int img){
-        this.leftImg = img;
-
-    }
-
-    public void setRightImg(int img){
-        this.rightImg = img;
     }
 
 
     @Override
     public void onClick(View view) {
-        ((ScreenSlidePagerActivity) getActivity()).select(position);
+        onClick();
+    }
+
+    public void onClick() {
+        if (first) activity.selectLast();
+        if (last) activity.selectFirst();
+        if (!first && !last) activity.select(position);
     }
 }

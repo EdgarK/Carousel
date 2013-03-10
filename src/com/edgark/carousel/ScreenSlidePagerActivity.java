@@ -20,21 +20,22 @@ import android.view.View;
  */
 public class ScreenSlidePagerActivity extends FragmentActivity implements ViewPager.OnPageChangeListener {
 
-    static Integer[] pics = {
-            R.drawable.icon_espresso,
-            R.drawable.icon_aeropress,
-            R.drawable.icon_maker,
-            R.drawable.icon_aeropress,
-            R.drawable.icon_espresso,
-            R.drawable.icon_maker
+    static Integer[][] pics = {
+            {R.drawable.icon_espresso,R.string.pict1},
+            {R.drawable.icon_aeropress,R.string.pict2},
+            {R.drawable.icon_maker,R.string.pict3},
+            {R.drawable.icon_aeropress,R.string.pict4},
+            {R.drawable.icon_espresso,R.string.pict5},
+            {R.drawable.icon_maker,R.string.pict6}
     };
+
     private int selected = 1;
 
 
     /**
      * The number of pages (wizard steps) to show in this demo.
      */
-    private static final int NUM_PAGES = pics.length;
+    private static final int NUM_PAGES = pics.length + 2;
 
     /**
      * The pager widget, which handles animation and allows swiping horizontally to access previous
@@ -103,11 +104,17 @@ public class ScreenSlidePagerActivity extends FragmentActivity implements ViewPa
             if (pages[position] != null) {
               return pages[position];
             }
-            pages[position] = new ScreenSlidePageFragment(pics[position], position);
-            if(position == selected)
+            Log.e("getItem",String.format("creation of item number %d has began",position));
+            if(position != 0 && position != NUM_PAGES - 1) pages[position] = new ScreenSlidePageFragment(pics[position - 1], position);
+            if(position == 0){
+                pages[position] = new ScreenSlidePageFragment(position, "first", pics[pics.length - 1]);
+            }
+            if(position == NUM_PAGES - 1){
+                pages[position] = new ScreenSlidePageFragment(position, "last", pics[0]);
+            }
+            if(position == selected) {
                 pages[position].setSelected(true);
-            if(position == 0) pages[position].setLeftImg(pics[pics.length-1]);
-            if(position == pics.length - 1) pages[position].setRightImg(pics[0]);
+            }
             return pages[position];
         }
     }
@@ -127,9 +134,9 @@ public class ScreenSlidePagerActivity extends FragmentActivity implements ViewPa
 
     }
     public void selectLast(){
-        select(NUM_PAGES - 1, false);
+        select(NUM_PAGES - 2, false);
     }
     public void selectFirst(){
-        select(0, false);
+        select(1, false);
     }
 }

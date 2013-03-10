@@ -2,4 +2,11 @@
 <resources>
     <string name="app_name">crousel</string>
     <string name="lorem_ipsum">Lorem Ipsum ............sdsdsdsdsdd</string>
+    <string name="pict1">0</string>
+    <string name="pict2">1</string>
+    <string name="pict3">2</string>
+    <string name="pict4">3</string>
+    <string name="pict5">4</string>
+    <string name="pict6">5</string>
+
 </resources>
