@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+        >
+
+    <com.edgark.carousel.ObservableScrollView
+            android:background="#ffff"
+            android:id="@+id/scroll"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            >
+        <LinearLayout
+                android:orientation="horizontal"
+                android:id="@+id/inscroll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
+            <ImageView
+
+                    android:src="@drawable/icon_espresso"
+                    android:id="@+id/img1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            <ImageView
+                    android:src="@drawable/icon_maker"
+                    android:id="@+id/img2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            <ImageView
+                    android:src="@drawable/icon_aeropress"
+                    android:id="@+id/img3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            <ImageView
+                    android:src="@drawable/icon_espresso"
+                    android:id="@+id/img4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            <ImageView
+                    android:src="@drawable/icon_aeropress"
+                    android:id="@+id/img5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            <ImageView
+                    android:src="@drawable/icon_espresso"
+                    android:id="@+id/img6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            <ImageView
+                    android:src="@drawable/icon_maker"
+                    android:id="@+id/img7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </com.edgark.carousel.ObservableScrollView>
+    <Button
+            android:text="run"
+            android:id="@+id/run"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:onClick="run"
+            ></Button>
+</LinearLayout>
+
