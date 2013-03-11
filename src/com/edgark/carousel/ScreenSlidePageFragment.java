@@ -28,6 +28,7 @@ public class ScreenSlidePageFragment extends Fragment implements View.OnClickLis
     private AlphaAnimation[] animations = new AlphaAnimation[2];
     private boolean first = false;
     private boolean last = false;
+    private boolean clickable = true;
     private int text;
     private TextView tv;
     private ScreenSlidePagerActivity activity;
@@ -73,6 +74,10 @@ public class ScreenSlidePageFragment extends Fragment implements View.OnClickLis
         return rootView;
     }
 
+    public void setClickable(boolean clickable){
+        this.clickable = clickable;
+    }
+
     public void setSelected(boolean selected) {
         if (!first && !last) {
             if (selected) {
@@ -94,7 +99,7 @@ public class ScreenSlidePageFragment extends Fragment implements View.OnClickLis
 
     @Override
     public void onClick(View view) {
-        onClick();
+        if(clickable) onClick();
     }
     private void makeAnimations() {
         final Float[][] choises = {{0.5f, 1.0f, 100f, 255f}, {1.0f, 0.5f, 255f, 100f}};

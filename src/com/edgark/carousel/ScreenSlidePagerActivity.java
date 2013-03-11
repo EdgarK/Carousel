@@ -1,5 +1,6 @@
 package com.edgark.carousel;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -53,8 +54,6 @@ public class ScreenSlidePagerActivity extends FragmentActivity implements ViewPa
         selected = i;
     }
 
-
-
     public void select(int position){
         select(position, true);
     }
@@ -63,7 +62,8 @@ public class ScreenSlidePagerActivity extends FragmentActivity implements ViewPa
             mPager.setCurrentItem(position, animation);
             onPageSelected(position);
         }else {
-            Log.e("select", String.format("Select trigered on selected item number %d",position));
+            Intent intent = new Intent(this, PagerSecondVersionActivity.class);
+            startActivity(intent);
         }
 
     }
