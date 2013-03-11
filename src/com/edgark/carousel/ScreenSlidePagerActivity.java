@@ -1,15 +1,12 @@
 package com.edgark.carousel;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.View;
 
 /**
  * Created by.
@@ -45,10 +42,7 @@ public class ScreenSlidePagerActivity extends FragmentActivity implements ViewPa
         mPager.setOffscreenPageLimit(2);
         mPager.setCurrentItem(selected);
         mPager.setOnPageChangeListener(this);
-
     }
-
-
 
     @Override
     public void onPageSelected(int i) {
@@ -57,7 +51,6 @@ public class ScreenSlidePagerActivity extends FragmentActivity implements ViewPa
         if(i == 0) i = NUM_PAGES -2;
         if(i == NUM_PAGES - 1) i = 1;
         selected = i;
-        Log.e("onPageSelected",String.format("settint selected to %d",i));
     }
 
 
@@ -67,7 +60,6 @@ public class ScreenSlidePagerActivity extends FragmentActivity implements ViewPa
     }
     public void select(int position, boolean animation){
         if(position != selected){
-            Log.e("select", String.valueOf(position));
             mPager.setCurrentItem(position, animation);
             onPageSelected(position);
         }else {
