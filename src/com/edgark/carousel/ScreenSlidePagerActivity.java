@@ -12,11 +12,10 @@ import android.util.Log;
 import android.view.View;
 
 /**
- * Created with IntelliJ IDEA.
- * User: edgar
+ * Created by.
+ * User: EdgarK
  * Date: 3/9/13
  * Time: 1:35 PM
- * To change this template use File | Settings | File Templates.
  */
 public class ScreenSlidePagerActivity extends FragmentActivity implements ViewPager.OnPageChangeListener {
 
@@ -30,21 +29,8 @@ public class ScreenSlidePagerActivity extends FragmentActivity implements ViewPa
     };
 
     private int selected = 1;
-
-
-    /**
-     * The number of pages (wizard steps) to show in this demo.
-     */
     private static final int NUM_PAGES = pics.length + 2;
-
-    /**
-     * The pager widget, which handles animation and allows swiping horizontally to access previous
-     * and next wizard steps.
-     */
     private ViewPager mPager;
-    /**
-     * The pager adapter, which provides the pages to the view pager widget.
-     */
     private ScreenSlidePagerAdapter mPagerAdapter;
 
     @Override
@@ -52,7 +38,6 @@ public class ScreenSlidePagerActivity extends FragmentActivity implements ViewPa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen_slide_pager);
 
-        // Instantiate a ViewPager and a PagerAdapter.
         mPager = (ViewPager) findViewById(R.id.pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
@@ -63,62 +48,19 @@ public class ScreenSlidePagerActivity extends FragmentActivity implements ViewPa
 
     }
 
-    @Override
-    public void onPageScrolled(int i, float v, int i1) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
+
 
     @Override
     public void onPageSelected(int i) {
         mPagerAdapter.getPage(selected).setSelected(false);
         mPagerAdapter.getPage(i).setSelected(true);
+        if(i == 0) i = NUM_PAGES -2;
+        if(i == NUM_PAGES - 1) i = 1;
         selected = i;
+        Log.e("onPageSelected",String.format("settint selected to %d",i));
     }
 
-    @Override
-    public void onPageScrollStateChanged(int i) {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
 
-    /**
-     * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in
-     * sequence.
-     */
-    private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
-        private ScreenSlidePageFragment[] pages = new ScreenSlidePageFragment[NUM_PAGES];
-        public ScreenSlidePagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public int getCount() {
-            return NUM_PAGES;
-        }
-
-        public ScreenSlidePageFragment getPage(int position){
-            return pages[position];
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            if (pages[position] != null) {
-              return pages[position];
-            }
-            Log.e("getItem",String.format("creation of item number %d has began",position));
-            if(position != 0 && position != NUM_PAGES - 1) pages[position] = new ScreenSlidePageFragment(pics[position - 1], position);
-            if(position == 0){
-                pages[position] = new ScreenSlidePageFragment(position, "first", pics[pics.length - 1]);
-            }
-            if(position == NUM_PAGES - 1){
-                pages[position] = new ScreenSlidePageFragment(position, "last", pics[0]);
-            }
-            if(position == selected) {
-                pages[position].setSelected(true);
-            }
-            return pages[position];
-        }
-    }
-    public void run(View view){}
 
     public void select(int position){
         select(position, true);
@@ -138,5 +80,51 @@ public class ScreenSlidePagerActivity extends FragmentActivity implements ViewPa
     }
     public void selectFirst(){
         select(1, false);
+    }
+
+
+
+    private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
+        private ScreenSlidePageFragment[] pages = new ScreenSlidePageFragment[NUM_PAGES];
+        public ScreenSlidePagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public int getCount() {
+            return NUM_PAGES;
+        }
+
+        public ScreenSlidePageFragment getPage(int position){
+            return pages[position];
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            if (pages[position] != null) {
+                return pages[position];
+            }
+            if(position != 0 && position != NUM_PAGES - 1) pages[position] = new ScreenSlidePageFragment(pics[position - 1], position);
+            if(position == 0){
+                pages[position] = new ScreenSlidePageFragment(position, "first", pics[pics.length - 1]);
+            }
+            if(position == NUM_PAGES - 1){
+                pages[position] = new ScreenSlidePageFragment(position, "last", pics[0]);
+            }
+            if(position == selected) {
+                pages[position].setSelected(true);
+            }
+            return pages[position];
+        }
+    }
+
+
+    @Override
+    public void onPageScrollStateChanged(int i) {
+
+    }
+    @Override
+    public void onPageScrolled(int i, float v, int i1) {
+
     }
 }

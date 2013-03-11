@@ -1,6 +1,7 @@
 package com.edgark.carousel;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -16,11 +17,10 @@ import android.widget.TextView;
 import java.lang.reflect.Array;
 
 /**
- * Created with IntelliJ IDEA.
- * User: edgar
+ * Created by .
+ * User: EdgarK
  * Date: 3/9/13
  * Time: 1:30 PM
- * To change this template use File | Settings | File Templates.
  */
 public class ScreenSlidePageFragment extends Fragment implements View.OnClickListener {
     private int img_id;
@@ -28,21 +28,14 @@ public class ScreenSlidePageFragment extends Fragment implements View.OnClickLis
     private ImageView iv;
     private int position;
     private AlphaAnimation[] animations = new AlphaAnimation[2];
-
     private boolean first = false;
     private boolean last = false;
     private int text;
     private TextView tv;
-
     private ScreenSlidePagerActivity activity;
 
 
-    private void initializer(Integer[] res, int position){
-        this.position = position;
-        makeAnimations();
-        img_id = res[0];
-        this.text = res[1];
-    }
+
     public ScreenSlidePageFragment(Integer[] img, int position) {
         initializer(img, position);
     }
@@ -56,6 +49,55 @@ public class ScreenSlidePageFragment extends Fragment implements View.OnClickLis
         }
     }
 
+    private void initializer(Integer[] res, int position){
+        this.position = position;
+        makeAnimations();
+        img_id = res[0];
+        this.text = res[1];
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        ViewGroup rootView = (ViewGroup) inflater.inflate(
+                R.layout.fragment_screen_slide_page, container, false);
+        iv = ((ImageView) rootView.findViewById(R.id.iv));
+        tv = ((TextView) rootView.findViewById(R.id.text_under_image));
+
+        iv.setImageResource(img_id);
+        tv.setText(text);
+        iv.setOnClickListener(this);
+        if (!selected || first || last)
+            iv.setAlpha(100);
+            tv.setTextColor(Color.argb(100, 0, 0, 0));
+        activity = (ScreenSlidePagerActivity) getActivity();
+
+        return rootView;
+    }
+
+    public void setSelected(boolean selected) {
+        if (!first && !last) {
+            if (selected) {
+                if (iv != null) iv.startAnimation(animations[0]);
+            } else {
+                if (iv != null) iv.startAnimation(animations[1]);
+            }
+            this.selected = selected;
+        }else{
+            if(selected) onClick();
+        }
+    }
+
+    public void onClick() {
+        if (first) activity.selectLast();
+        if (last) activity.selectFirst();
+        if (!first && !last) activity.select(position);
+    }
+
+    @Override
+    public void onClick(View view) {
+        onClick();
+    }
     private void makeAnimations() {
         final Float[][] choises = {{0.5f, 1.0f, 100f, 255f}, {1.0f, 0.5f, 255f, 100f}};
 
@@ -67,71 +109,20 @@ public class ScreenSlidePageFragment extends Fragment implements View.OnClickLis
                 @Override
                 public void onAnimationStart(Animation animation) {
                     iv.setAlpha(Math.round(choises[index][2]));
+                    tv.setTextColor(Color.argb(Math.round(choises[index][2]), 0, 0, 0));
                 }
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
                     iv.setAlpha(Math.round(choises[index][3]));
+                    tv.setTextColor(Color.argb(Math.round(choises[index][3]), 0, 0, 0));
                 }
 
                 @Override
                 public void onAnimationRepeat(Animation animation) {
-                    //To change body of implemented methods use File | Settings | File Templates.
                 }
             });
             animations[i] = animation;
         }
-
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(
-                R.layout.fragment_screen_slide_page, container, false);
-        iv = ((ImageView) rootView.findViewById(R.id.iv));
-        tv = ((TextView) rootView.findViewById(R.id.text_under_image));
-        iv.setImageResource(img_id);
-        tv.setText(text);
-        iv.setOnClickListener(this);
-        if (!selected)
-            iv.setAlpha(100);
-//            tv.setAlpha(100);
-        activity = (ScreenSlidePagerActivity) getActivity();
-
-        return rootView;
-    }
-
-    public boolean isSelected() {
-        return selected;
-    }
-
-    public void setSelected(boolean selected) {
-        if (!first && !last) {
-            if (selected) {
-                if (iv != null) {
-                    iv.startAnimation(animations[0]);
-                }
-            } else {
-                if (iv != null) {
-                    iv.startAnimation(animations[1]);
-                }
-            }
-            this.selected = selected;
-        }else{
-            if(selected) onClick();
-        }
-    }
-
-
-    @Override
-    public void onClick(View view) {
-        onClick();
-    }
-
-    public void onClick() {
-        if (first) activity.selectLast();
-        if (last) activity.selectFirst();
-        if (!first && !last) activity.select(position);
     }
 }
